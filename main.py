@@ -17,3 +17,4 @@ player2 = Player("Hráč 2", deck2)
 if __name__ == "__main__":
     game_loop(player1, player2)
 
+
