@@ -16,8 +16,11 @@ def game_loop(player1, player2):
 
         # Simulace hraní karty (pokud nějakou má)
         if current_player.hand:
-            current_player.play_card(0)  # Hraje první kartu v ruce
+            current_player.play_card(0)
 
         turn += 1
 
+        input("Stiskni Enter pro další tah...")  # Pauza mezi tahy
+
     print("Konec hry!")
+
