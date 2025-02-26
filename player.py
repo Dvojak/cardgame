@@ -26,7 +26,6 @@ class Player:
             else:
                 print(f"Nedostatek many pro {card.name}!")
         else:
-            print("Neplatný index karty!")
-
+            print("Neplatný index karty!")    
     def __repr__(self):
         return f"{self.name} (HP: {self.health}, Mana: {self.mana})"

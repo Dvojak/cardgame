@@ -12,9 +12,13 @@ def game_loop(player1, player2):
 
         # Líznutí karty
         current_player.draw_card()
-        print(f"Ruka {current_player.name}: {current_player.hand}")
+        print(f"Draw {current_player.name}: {current_player.hand}")
+        
+        print("\n=== Tvůj board ===")
+        for i,card in enumerate(current_player.board):
+                print(f"{i}:{card}")
 
-        print("\nTvoje ruka")
+        print("\n=== Tvoje ruka ===")
         for i,card in enumerate(current_player.hand):
             print(f"{i}: {card}")
         choice = input("Zadej index karty, kterou chceš zahrát, jinak dej enter: ")
@@ -23,6 +27,8 @@ def game_loop(player1, player2):
         if choice.isdigit():
             choice = int(choice)
             current_player.play_card(choice)
+     
+
 
 
 
