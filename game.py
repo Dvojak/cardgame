@@ -26,13 +26,26 @@ def game_loop(player1, player2):
         print("\n=== Tvoje ruka ===")
         for i,card in enumerate(current_player.hand):
             print(f"{i}: {card}")
-        choice = input("Zadej index karty, kterou chceš zahrát, jinak dej enter: ")
-        if choice == "":
-            pass
-        if choice.isdigit():
-            choice = int(choice)
-            current_player.play_card(choice)
-     
+
+        Which = input("1. Vylož kartu na board\n2. Zaútočit s kartou na boardu\n") 
+        if Which == "1":
+            choice = input("Zadej index karty, kterou chceš vyložit na board, jinak dej enter: ")
+            if choice == "":
+                pass
+            if choice.isdigit():
+                choice = (choice)
+                current_player.play_card(choice)   
+        elif Which == "2":
+            choice = input("Zadej index karty, kterou zaútočíš, jinak dej enter: ")
+            if choice == "":
+                pass
+            if choice.isdigit():
+                attack = input("Zadej index karty, na kterou zaútočíš, jinak dej enter: ")
+                if attack == "":
+                    pass
+                if attack.isdigit():
+                     current_player.attack_card(int(choice), int(attack))
+
 
 
 
