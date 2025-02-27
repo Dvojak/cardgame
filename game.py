@@ -10,41 +10,46 @@ def game_loop(player1, player2):
 
         current_player.mana = min(turn, 10)
         print(f"{current_player.name} má {current_player.mana} many.")
-
+        print(f"{current_player.name}: má {current_player.health} HP")
+        print("\n=== Líznutí karty ===")
         # Líznutí karty
         current_player.draw_card()
         print(f"Draw {current_player.name}: {current_player.hand}")
         
         print("\n=== Soupeřův board ===")
-        for i,card in enumerate(opponent.board):
+        for i,card in enumerate(opponent.board, start=1):
                 print(f"{i}:{card}")
 
         print("\n=== Tvůj board ===")
-        for i,card in enumerate(current_player.board):
+        for i,card in enumerate(current_player.board, start=1):
                 print(f"{i}:{card}")
 
         print("\n=== Tvoje ruka ===")
-        for i,card in enumerate(current_player.hand):
+        for i,card in enumerate(current_player.hand, start=1):
             print(f"{i}: {card}")
-
+        print("\n=== Tvoje akce ===")
         Which = input("1. Vylož kartu na board\n2. Zaútočit s kartou na boardu\n") 
         if Which == "1":
             choice = input("Zadej index karty, kterou chceš vyložit na board, jinak dej enter: ")
             if choice == "":
                 pass
             if choice.isdigit():
-                choice = (choice)
-                current_player.play_card(choice)   
+                choice = int(choice) - 1
+                current_player.play_card(choice)
         elif Which == "2":
-            choice = input("Zadej index karty, kterou zaútočíš, jinak dej enter: ")
-            if choice == "":
-                pass
-            if choice.isdigit():
-                attack = input("Zadej index karty, na kterou zaútočíš, jinak dej enter: ")
-                if attack == "":
-                    pass
-                if attack.isdigit():
-                     current_player.attack_card(int(choice), int(attack))
+           choice = int(input("Zadej index karty, kterou zaútočíš: ")) - 1  # Převedení na index
+           attack = int(input("Zadej index cíle útoku (0 pro hráče): "))  # Cíl útoku
+
+           if attack == 0 and opponent.board == []:
+            target = opponent  # Útok na hráče
+           elif 1 <= attack <= len(opponent.board):
+            target = opponent.board[attack - 1]  # Útok na kartu
+           else:
+             print("Neplatný cíl!")
+             target = None  # Neplatná volba
+
+           if target:
+             current_player.attack_card(choice, target)  # Teď předáváš PŘÍMO objekt
 
 
 
