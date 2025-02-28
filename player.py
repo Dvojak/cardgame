@@ -27,17 +27,17 @@ class Player:
                 print(f"Nedostatek many pro {card.name}!")
         else:
             print("Neplatný index karty!") 
-    def attack_card(self, card_index, target):
+    def attack_card(self, card_index, target,opponent,who):
      attacker = self.board[card_index]  # Útočník
-
      if isinstance(target, Card):  # Cíl je karta
+        target_index = opponent.board[who]  # Cíl útoku
         target.health -= attacker.attack
         attacker.health -= target.attack  # Protivýpad
         print(f"{attacker.name} útočí na {target.name}!")
 
         # Odstranění mrtvých karet
         if target.health <= 0:
-            self.opponent.board.remove(target)
+            opponent.board.remove(target_index)
             print(f"{target.name} byla zničena!")
 
         if attacker.health <= 0:
@@ -47,6 +47,7 @@ class Player:
      elif isinstance(target, Player):  # Cíl je hráč
         target.health -= attacker.attack
         print(f"{attacker.name} útočí na hráče za {attacker.attack} DMG!")
+        Card.can_attack = False 
           
     def __repr__(self):
         return f"{self.name} (HP: {self.health}, Mana: {self.mana})"

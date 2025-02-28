@@ -4,5 +4,7 @@ class Card:
         self.cost = cost
         self.attack = attack
         self.health = health
+        self.can_attack = True 
+
     def __repr__(self):
         return f"{self.name} (Mana: {self.cost}, Atk: {self.attack}, HP: {self.health})"
