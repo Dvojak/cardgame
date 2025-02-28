@@ -1,3 +1,4 @@
+        
 class Card:
     def __init__(self, name, cost, attack=0, health=0):
         self.name = name
