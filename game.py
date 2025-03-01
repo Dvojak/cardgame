@@ -1,5 +1,6 @@
 from player import Player
 
+
 def game_loop(player1, player2):
     round = 1
     while player1.health > 0 and player2.health > 0:
