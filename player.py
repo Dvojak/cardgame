@@ -27,27 +27,33 @@ class Player:
                 print(f"Nedostatek many pro {card.name}!")
         else:
             print("Neplatný index karty!") 
-    def attack_card(self, card_index, target,opponent,who):
-     attacker = self.board[card_index]  # Útočník
-     if isinstance(target, Card):  # Cíl je karta
-        target_index = opponent.board[who]  # Cíl útoku
-        target.health -= attacker.attack
-        attacker.health -= target.attack  # Protivýpad
-        print(f"{attacker.name} útočí na {target.name}!")
 
-        # Odstranění mrtvých karet
-        if target.health <= 0:
-            opponent.board.remove(target_index)
-            print(f"{target.name} byla zničena!")
+    def attack_card(self, card_index, target, opponent, who):
+        attacker = self.board[card_index]
+        if isinstance(target, Card):
+            target_index = opponent.board[who]
+            target.health -= attacker.attack
+            attacker.health -= target.attack
+            print(f"{attacker.name} útočí na {target.name}!")
 
-        if attacker.health <= 0:
-            self.board.remove(attacker)
-            print(f"{attacker.name} byla zničena!")
+            if target.health <= 0:
+                opponent.board.remove(target_index)
+                print(f"{target.name} byla zničena!")
 
-     elif isinstance(target, Player):  # Cíl je hráč
-        target.health -= attacker.attack
-        print(f"{attacker.name} útočí na hráče za {attacker.attack} DMG!")
-        Card.can_attack = False 
-          
+            if attacker.health <= 0:
+                self.board.remove(attacker)
+                print(f"{attacker.name} byla zničena!")
+
+        elif isinstance(target, Player):
+            target.health -= attacker.attack
+            print(f"{attacker.name} útočí na hráče za {attacker.attack} DMG!")
+            attacker.can_attack = False 
+
+    def get_hand_info(self):
+        return [str(card) for card in self.hand]
+
+    def get_board_info(self):
+        return [str(card) for card in self.board]
+
     def __repr__(self):
         return f"{self.name} (HP: {self.health}, Mana: {self.mana})"

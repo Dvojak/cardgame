@@ -1,83 +1,56 @@
+import pygame
 from player import Player
-
 
 def game_loop(player1, player2):
     round = 1
-    while player1.health > 0 and player2.health > 0:
-        print(f"\n=== Kolo {round} ===")
-        pass_counter = 0  # Počítá pasování obou hráčů
+    turn = 1
+    running = True
+    pass_counter = 0
+    WIDTH, HEIGHT = 800, 600
+    # Inicializace Pygame
+    pygame.init()
 
-        # Obnova many (max 10)
-        player1.mana = min(round, 10)
-        player2.mana = min(round, 10)
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Karetní hra")
+    font = pygame.font.Font(None, 36)  # Výchozí font
 
-        # Líznutí karty
-        player1.draw_card()
-        player2.draw_card()
+    
+    while running:
+        screen.fill((0, 128, 0))  # Zelené pozadí jako herní stůl
+        current_player = player1 if turn % 2 == 1 else player2
+        opponent = player2 if current_player == player1 else player1
         
-        turn = 1
-        while pass_counter < 2:  # Kolo pokračuje, dokud oba hráči nepasují
-            current_player = player1 if turn % 2 == 1 else player2
-            opponent = player2 if current_player == player1 else player1
-            print(f"\n=== Tah {turn} ===")
-            print(f"{current_player.name} má {current_player.mana} many a {current_player.health} HP.")
-
-            print("\n=== Soupeřův board ===")
-            for i, card in enumerate(opponent.board, start=1):
-                print(f"{i}: {card}")
-
-            print("\n=== Tvůj board ===")
-            for i, card in enumerate(current_player.board, start=1):
-                print(f"{i}: {card}")
-
-            print("\n=== Tvoje ruka ===")
-            for i, card in enumerate(current_player.hand, start=1):
-                print(f"{i}: {card}")
-
-            print("\n=== Tvoje akce ===")
-            Which = input("1. Vylož kartu (předá tah)\n2. Zaútočit\nEnter pro pasování tahu\n") 
-
-            if Which == "1":
-                choice = input("Zadej index karty k vyložení (nebo enter pro zpět): ")
-                if choice.isdigit():
-                    choice = int(choice) - 1
-                    current_player.play_card(choice)
-                    print(f"\n{current_player.name} vyložil kartu!")
-                    input("\nEnter pro pokračování...")  # Pauza, aby bylo vidět, co se stalo
-                    pass_counter = 0  # Resetuje pasování
-                    turn += 1  # Předá tah soupeři
-                    continue  
-
-            elif Which == "2":
-                choice = int(input("Zadej index karty, kterou útočíš: ")) - 1
-                attack = int(input("Zadej index cíle útoku (0 pro hráče): "))  
-
-                if attack == 0 and opponent.board == []:
-                    target = opponent  
-                elif 1 <= attack <= len(opponent.board):
-                    target = opponent.board[attack - 1]  
-                else:
-                    print("Neplatný cíl!")
-                    target = None  
-
-                if target:
-                    current_player.attack_card(choice, target, opponent, attack - 1)  
-                    print(f"\n{current_player.name} zaútočil na {target}!")
-                    input("\nEnter pro pokračování...")  # Pauza po útoku
-                    pass_counter = 0  # Reset pasování
-                continue  # Po útoku hráč může hrát dál
-
-            elif Which == "":  # Hráč pasuje
-                pass_counter += 1  
-                turn += 1  # Předá tah soupeři
-                print(f"{current_player.name} pasuje.")
-                input("\nEnter pro pokračování...")  # Pauza po pasování
-
-        round += 1  # Pokud oba pasovali, začne nové kolo
-
-
-
-
-
-    print("Konec hry!")
-
+        # Zobrazení informací o hráčích
+        player1_text = font.render(f"{player1.name}: {player1.health} HP, {player1.mana} Mana", True, (255, 255, 255))
+        player2_text = font.render(f"{player2.name}: {player2.health} HP, {player2.mana} Mana", True, (255, 255, 255))
+        screen.blit(player1_text, (50, 50))
+        screen.blit(player2_text, (50, 500))
+        
+        # Vykreslení karet na ruce a boardu (zatím jen jako text)
+        for i, card in enumerate(current_player.hand):
+            card_text = font.render(f"{card.name} ({card.cost} mana)", True, (255, 255, 255))
+            screen.blit(card_text, (50 + i * 100, 400))
+        
+        for i, card in enumerate(current_player.board):
+            card_text = font.render(f"{card.name} {card.attack}/{card.health}", True, (255, 255, 255))
+            screen.blit(card_text, (50 + i * 100, 300))
+        
+        pygame.display.flip()
+        # Herní smyčka reagující na události
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    pass_counter += 1
+                    turn += 1
+                    if pass_counter >= 2:
+                        round += 1
+                        pass_counter = 0
+                        player1.mana = min(round, 10)
+                        player2.mana = min(round, 10)
+                        player1.draw_card()
+                        player2.draw_card()
+                        
+    
+    pygame.quit()
