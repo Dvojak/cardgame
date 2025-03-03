@@ -8,7 +8,7 @@ class Card:
         self.attack = attack
         self.health = health
         self.can_attack = True
-        self.image = pygame.image.load("images/Rehor.png")
+        self.image = pygame.image.load("images/card_template.png")
         
         self.x = 0  # Výchozí pozice, nastaví se při vykreslení
         self.y = 0
@@ -19,18 +19,18 @@ class Card:
         self.x, self.y = x, y  # Uložíme pozici
 
         pygame.draw.rect(screen, (200, 200, 200), (x, y, self.width, self.height), border_radius=10)
-        screen.blit(self.image, (x + 10, y + 30))
+        screen.blit(self.image, (x, y))
 
         name_text = font.render(self.name, True, (0, 0, 0))
-        screen.blit(name_text, (x + 5, y + 5))
+        screen.blit(name_text, (x + 15, y + 5))
 
-        mana_text = font.render(str(self.cost), True, (0, 0, 255))
+        mana_text = font.render(str(self.cost), True, (0, 0, 0))
         screen.blit(mana_text, (x + 5, y + 5))
 
-        attack_text = font.render(str(self.attack), True, (255, 0, 0))
+        attack_text = font.render(str(self.attack), True, (0, 0, 0))
         screen.blit(attack_text, (x + 75, y + 125))
 
-        health_text = font.render(str(self.health), True, (0, 255, 0))
+        health_text = font.render(str(self.health), True, (0, 0, 0))
         screen.blit(health_text, (x + 5, y + 125))
 
     def was_clicked(self, mouse_x, mouse_y):

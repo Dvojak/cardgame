@@ -8,7 +8,7 @@ def game_loop(player1, player2):
     running = True
     pass_counter = 0
     selected_card = None 
-    WIDTH, HEIGHT = 800, 600
+    WIDTH, HEIGHT = 1280, 600
 
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -26,8 +26,8 @@ def game_loop(player1, player2):
         bottom_text = font.render(f"{bottom_player.name}: {bottom_player.health} HP, {bottom_player.mana} Mana", True, (255, 255, 255))
         top_text = font.render(f"{top_player.name}: {top_player.health} HP, {top_player.mana} Mana", True, (255, 255, 255))
 
-        screen.blit(top_text, (50, 50))  # Protivník nahoře
-        screen.blit(bottom_text, (50, 500))  # Hráč na tahu dole
+        screen.blit(top_text, (50, 10))  # Protivník nahoře
+        screen.blit(bottom_text, (50, 550))  # Hráč na tahu dole
 
         # Vykreslení karet hráče nahoře
         for i, card in enumerate(top_player.board):
@@ -43,12 +43,12 @@ def game_loop(player1, player2):
 
         # Vykreslení karet v ruce hráče na tahu (dole)
         for i, card in enumerate(bottom_player.hand):
-            x = 50 + i * 120
-            y = 350  # Ještě níž než board
+            x = 305 + i * 120
+            y = 450  # Ještě níž než board
             card.draw(screen, x, y, font)
 
         pygame.display.flip()
-
+          
         # Herní smyčka - události
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -64,6 +64,7 @@ def game_loop(player1, player2):
                         top_player.mana = min(round, 10)
                         bottom_player.draw_card()
                         top_player.draw_card()
+                        break
             elif event.type == pygame.MOUSEBUTTONDOWN:  
                mouse_x, mouse_y = pygame.mouse.get_pos()
                 # 1) Nejprve zkusíme vyložit kartu
@@ -74,16 +75,17 @@ def game_loop(player1, player2):
                             print(f"{bottom_player.name} vyložil kartu {card.name}")
                             pass_counter = 0
                             turn += 1
+                            break
                         else:
                             print("Nedostatek many!")
-                            break  # Když zahraje kartu, už dál nic neřešíme
+                            
 
     # 2) Pokud nebyla vyložena karta, zkontrolujeme útok
 
     # Pokud ještě není vybraná karta k útoku, zkusíme ji vybrat
         if selected_card is None:
             for card in bottom_player.board:
-                if card.was_clicked(mouse_x, mouse_y):
+                if card.was_clicked(mouse_x, mouse_y) :
                     selected_card = card
                     print(f"Vybrána karta k útoku: {card.name}")
                     break
@@ -96,7 +98,7 @@ def game_loop(player1, player2):
                     selected_card = None  # Reset výběru
                     break
             else:  # Pokud nemá soupeř karty, útok na hráče
-                if 50 <= mouse_x <= 250 and 50 <= mouse_y <= 100:  # Klik na horního hráče
+                if 50 <= mouse_x <= 250 and 10 <= mouse_y <= 100:  # Klik na horního hráče
                     bottom_player.attack_card(bottom_player.board.index(selected_card), top_player, top_player)
                     selected_card = None
 
