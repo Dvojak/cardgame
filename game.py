@@ -63,5 +63,15 @@ def game_loop(player1, player2):
                         top_player.mana = min(round, 10)
                         bottom_player.draw_card()
                         top_player.draw_card()
+            elif event.type == pygame.MOUSEBUTTONDOWN:  # Kliknutí myší
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                for i,card in enumerate(bottom_player.hand):
+                    if card.was_clicked(mouse_x, mouse_y):
+                        if bottom_player.mana >= card.cost:  # Má dost many?
+                            bottom_player.play_card(i)
+                            print(f"{bottom_player.name} vyložil kartu {card.name}")
+                        else:
+                            print("Nedostatek many!")
 
-    pygame.quit()
+
+pygame.quit()

@@ -7,31 +7,35 @@ class Card:
         self.cost = cost
         self.attack = attack
         self.health = health
-        self.can_attack = True 
-        self.image = pygame.image.load(f"images/Rehor.png")
+        self.can_attack = True
+        self.image = pygame.image.load("images/Rehor.png")
+        
+        self.x = 0  # Výchozí pozice, nastaví se při vykreslení
+        self.y = 0
+        self.width = 100
+        self.height = 150
+
     def draw(self, screen, x, y, font):
-        # Vykreslení obdélníku pro kartu
-        pygame.draw.rect(screen, (200, 200, 200), (x, y, 100, 150), border_radius=10)
-        
-        # Vykreslení obrázku
+        self.x, self.y = x, y  # Uložíme pozici
+
+        pygame.draw.rect(screen, (200, 200, 200), (x, y, self.width, self.height), border_radius=10)
         screen.blit(self.image, (x + 10, y + 30))
-        
-        # Vykreslení jména karty
+
         name_text = font.render(self.name, True, (0, 0, 0))
         screen.blit(name_text, (x + 5, y + 5))
-        
-        # Vykreslení many vlevo nahoře
+
         mana_text = font.render(str(self.cost), True, (0, 0, 255))
         screen.blit(mana_text, (x + 5, y + 5))
-        
-        # Vykreslení síly vpravo dole
+
         attack_text = font.render(str(self.attack), True, (255, 0, 0))
         screen.blit(attack_text, (x + 75, y + 125))
-        
-        # Vykreslení životů vlevo dole
+
         health_text = font.render(str(self.health), True, (0, 255, 0))
         screen.blit(health_text, (x + 5, y + 125))
-    
+
+    def was_clicked(self, mouse_x, mouse_y):
+        return self.x <= mouse_x <= self.x + self.width and self.y <= mouse_y <= self.y + self.height
+
 
     def __repr__(self):
         return f"{self.name} (Mana: {self.cost}, Atk: {self.attack}, HP: {self.health})"
