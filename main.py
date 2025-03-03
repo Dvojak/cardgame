@@ -4,8 +4,8 @@ from card import Card
 from game import game_loop
 
 # Vytvoření balíčku karet pro oba hráče
-deck1 = [Card("Goblin", 1, 2, 1), Card("Ogre", 3, 4, 4), Card("Elf", 2, 3, 2), Card("Troll", 4, 5, 5)]
-deck2 = [Card("Knight", 2, 3, 2), Card("Dragon", 5, 6, 5), Card("Wizard", 4, 5, 3), Card("Archer", 3, 4, 2)]
+deck1 = [Card("Goblin", 1, 2, 1,"goblin"), Card("Ogre", 3, 4, 4,"ogre"), Card("Elf", 2, 3, 2,"long_legs"), Card("Troll", 4, 5, 5,"troll")]
+deck2 = [Card("Knight", 2, 3, 2,"knight"), Card("Dragon", 5, 6, 5,"dragon"), Card("Wizard", 4, 5, 3,"wizard"), Card("Archer", 3, 4, 2,"archer")]
 random.shuffle(deck1)
 random.shuffle(deck2)
 

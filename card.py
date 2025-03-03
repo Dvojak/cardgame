@@ -2,13 +2,14 @@ import pygame
 
 
 class Card:
-    def __init__(self, name, cost, attack=0, health=0):
+    def __init__(self, name, cost, attack=0, health=0,photo="card_template"):
         self.name = name
         self.cost = cost
         self.attack = attack
         self.health = health
+        self.photo = photo
         self.can_attack = True
-        self.image = pygame.image.load("images/card_template.png")
+        self.image = pygame.image.load(f"images/{self.photo}.png")
         
         self.x = 0  # Výchozí pozice, nastaví se při vykreslení
         self.y = 0
