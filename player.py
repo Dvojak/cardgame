@@ -28,16 +28,20 @@ class Player:
         else:
             print("Neplatný index karty!") 
 
-    def attack_card(self, card_index, target, opponent, who):
+    def attack_card(self, card_index, target, opponent):
         attacker = self.board[card_index]
+
+        if not attacker.can_attack:
+            print(f"{attacker.name} už tento tah útočila!")
+            return
+
         if isinstance(target, Card):
-            target_index = opponent.board[who]
             target.health -= attacker.attack
             attacker.health -= target.attack
             print(f"{attacker.name} útočí na {target.name}!")
 
             if target.health <= 0:
-                opponent.board.remove(target_index)
+                opponent.board.remove(target)
                 print(f"{target.name} byla zničena!")
 
             if attacker.health <= 0:
@@ -47,7 +51,8 @@ class Player:
         elif isinstance(target, Player):
             target.health -= attacker.attack
             print(f"{attacker.name} útočí na hráče za {attacker.attack} DMG!")
-            attacker.can_attack = False 
+
+        attacker.can_attack = False  # Zabránění opakovanému útoku
 
     def get_hand_info(self):
         return [str(card) for card in self.hand]

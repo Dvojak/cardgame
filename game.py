@@ -7,6 +7,7 @@ def game_loop(player1, player2):
     turn = 1
     running = True
     pass_counter = 0
+    selected_card = None 
     WIDTH, HEIGHT = 800, 600
 
     pygame.init()
@@ -63,15 +64,42 @@ def game_loop(player1, player2):
                         top_player.mana = min(round, 10)
                         bottom_player.draw_card()
                         top_player.draw_card()
-            elif event.type == pygame.MOUSEBUTTONDOWN:  # Kliknutí myší
-                mouse_x, mouse_y = pygame.mouse.get_pos()
-                for i,card in enumerate(bottom_player.hand):
+            elif event.type == pygame.MOUSEBUTTONDOWN:  
+               mouse_x, mouse_y = pygame.mouse.get_pos()
+                # 1) Nejprve zkusíme vyložit kartu
+               for i, card in enumerate(bottom_player.hand):
                     if card.was_clicked(mouse_x, mouse_y):
                         if bottom_player.mana >= card.cost:  # Má dost many?
                             bottom_player.play_card(i)
                             print(f"{bottom_player.name} vyložil kartu {card.name}")
+                            pass_counter = 0
+                            turn += 1
                         else:
                             print("Nedostatek many!")
+                            break  # Když zahraje kartu, už dál nic neřešíme
+
+    # 2) Pokud nebyla vyložena karta, zkontrolujeme útok
+
+    # Pokud ještě není vybraná karta k útoku, zkusíme ji vybrat
+        if selected_card is None:
+            for card in bottom_player.board:
+                if card.was_clicked(mouse_x, mouse_y):
+                    selected_card = card
+                    print(f"Vybrána karta k útoku: {card.name}")
+                    break
+
+    # Pokud už je karta vybraná, pokusíme se zaútočit
+        else:
+            for card in top_player.board:
+                if card.was_clicked(mouse_x, mouse_y):
+                    bottom_player.attack_card(bottom_player.board.index(selected_card), card, top_player)
+                    selected_card = None  # Reset výběru
+                    break
+            else:  # Pokud nemá soupeř karty, útok na hráče
+                if 50 <= mouse_x <= 250 and 50 <= mouse_y <= 100:  # Klik na horního hráče
+                    bottom_player.attack_card(bottom_player.board.index(selected_card), top_player, top_player)
+                    selected_card = None
+
 
 
 pygame.quit()
