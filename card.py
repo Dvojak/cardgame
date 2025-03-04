@@ -57,7 +57,6 @@ class Effect:
                 
                 pass
             elif self.action == "draw":
-                Player.draw_card() * self.value
                 pass
             elif self.action == "heal": 
                 pass
